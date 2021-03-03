@@ -172,8 +172,25 @@ pascal_sbd_dataset = dataset_base.copy({
     'class_names': PASCAL_CLASSES,
 })
 
+cig_butts_dataset = dataset_base.copy({
+  'name': 'Immersive Limit - Cigarette Butts',
+  'train_info': './data/cig_butts/train/coco_annotations.json',
+  'train_images': './data/cig_butts/train/images/',
+  'valid_info': './data/cig_butts/val/coco_annotations.json',
+  'valid_images': './data/cig_butts/val/images/',
+  'class_names': ('cig_butt'),
+  'label_map': { 1:  1 }
+})
 
-
+card_dataset = dataset_base.copy({
+    'name': 'Cards',
+    'train_info': './data/cards/train/coco_annotations.json',
+    'train_images': './data/cards/train/images/',
+    'valid_info': './data/cards/val/coco_annotations.json',
+    'valid_images': './data/cards/val/images/',
+    'class_names': ['card'],
+    'label_map': { 1:  1 }
+})
 
 
 # ----------------------- TRANSFORMS ----------------------- #
@@ -665,7 +682,7 @@ yolact_base_config = coco_base_config.copy({
     
     # Training params
     'lr_steps': (280000, 600000, 700000, 750000),
-    'max_iter': 800000,
+    'max_iter': 1000000,
     
     # Backbone Settings
     'backbone': resnet101_backbone.copy({
@@ -767,6 +784,26 @@ yolact_resnet50_pascal_config = yolact_resnet50_config.copy({
     })
 })
 
+yolact_resnet50_cig_butts_config = yolact_resnet50_config.copy({
+    'name': 'yolact_plus_resnet50_cig_butts',
+    # Dataset stuff
+    'dataset': cig_butts_dataset,
+    'num_classes': len(cig_butts_dataset.class_names) + 1,
+
+    # Image Size
+    'max_size': 512,
+})
+
+yolact_resnet50_cards_config = yolact_resnet50_config.copy({
+    'name': 'yolact_plus_resnet50_cards',
+    # Dataset stuff
+    'dataset': card_dataset,
+    'num_classes': len(card_dataset.class_names) + 1,
+
+    # Image Size
+    'max_size': 800,
+})
+
 # ----------------------- YOLACT++ CONFIGS ----------------------- #
 
 yolact_plus_base_config = yolact_base_config.copy({
@@ -824,3 +861,4 @@ def set_dataset(dataset_name:str):
     """ Sets the dataset of the current config. """
     cfg.dataset = eval(dataset_name)
     
+
