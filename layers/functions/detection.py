@@ -29,7 +29,7 @@ class Detect(object):
         self.use_cross_class_nms = False
         self.use_fast_nms = False
 
-    def __call__(self, predictions, net):
+    def __call__(self, predictions):
         """
         Args:
              loc_data: (tensor) Loc preds from loc layers
@@ -73,7 +73,9 @@ class Detect(object):
                 if result is not None and proto_data is not None:
                     result['proto'] = proto_data[batch_idx]
 
-                out.append({'detection': result, 'net': net})
+                # out.append({'detection': result, 'net': net})
+                out.append({'detection': result})
+                # out.append(result)
         
         return out
 
